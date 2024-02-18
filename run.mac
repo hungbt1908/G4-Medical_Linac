@@ -1,0 +1,7 @@
+# Initialize kernel
+#
+/run/initialize
+
+# Run application
+/run/printProgress -1
+/run/beamOn 1000
