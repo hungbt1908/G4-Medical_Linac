@@ -1,12 +1,60 @@
+# Setups geometry
+#
+/LINAC/Geometry/SetJaw1XAperture       -5. cm
+/LINAC/Geometry/SetJaw2XAperture        5. cm
+/LINAC/Geometry/SetJaw1YAperture       -5. cm
+/LINAC/Geometry/SetJaw2YAperture        5. cm
+/LINAC/Geometry/SetIsocenter            100. cm
+/LINAC/Geometry/SetPhantomXDim          30. cm
+/LINAC/Geometry/SetPhantomYDim          30. cm
+/LINAC/Geometry/SetPhantomZDim          30. cm
+
 # Change the default number of workers (in multi-threading mode) 
 #
 /run/numberOfThreads 4
+
+# Init scoring-mesh
+#
+/score/create/boxMesh         boxMesh1
+/score/mesh/boxSize           15.0 15.0 15.0 cm
+/score/mesh/nBin              300 300 300
+/score/mesh/translate/xyz     0. 0. 115. cm
+/score/quantity/doseDeposit   dose
+/score/close
+/score/list
+#
+/score/create/boxMesh         boxMesh2
+/score/mesh/boxSize           15.0 15.0 15.0 cm
+/score/mesh/nBin              300 300 300
+/score/mesh/translate/xyz     0. 0. 115. cm
+/score/quantity/doseDeposit   eDep
+/score/close
+/score/list
 
 # Initialize kernel
 #
 /run/geometryModified
 /run/initialize
 
+# Setups electron beam
+#
+/LINAC/Beam/SetBeamEnergy         6.0 MeV
+/LINAC/Beam/SetEnergyStd          0.127 MeV
+/LINAC/Beam/SetBeamRadius         1.25 mm
+/LINAC/Beam/SetBeamXPos           0. mm
+/LINAC/Beam/SetBeamYPos           0. mm
+/LINAC/Beam/SetBeamZPos          -0.5 cm
+/LINAC/Beam/SetMinSolidAngle      0. deg
+/LINAC/Beam/SetMaxSolidAngle      0.01 deg
+/LINAC/Beam/SetThetaRotationAngle 0. deg
+/LINAC/Beam/SetPhiRotationAngle   90. deg
+
 #
 # Visualization setting
 /control/execute vis.mac
+
+# Run
+#
+/run/beamOn 1
+/score/dumpQuantityToFile boxMesh1 dose DepDose.csv
+/score/dumpQuantityToFile boxMesh2 eDep EDep.csv

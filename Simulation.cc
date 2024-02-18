@@ -6,11 +6,12 @@
 #include "G4VisManager.hh"
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
-#include "G4ParallelWorldPhysics.hh"
 
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
 #include "ActionInitialization.hh"
+
+#include "G4ScoringManager.hh"
 
 int main(int argc, char** argv)
 {	
@@ -20,6 +21,9 @@ int main(int argc, char** argv)
 
 	// construct the default run manager
   	auto* runManager = G4RunManagerFactory::CreateRunManager(G4RunManagerType::Default);
+
+	// this enables scoring
+	G4ScoringManager::GetScoringManager(); 
 
 	runManager->SetUserInitialization(new DetectorConstruction());
 	runManager->SetUserInitialization(new PhysicsList());
